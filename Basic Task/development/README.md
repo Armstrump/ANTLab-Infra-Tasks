@@ -1,15 +1,34 @@
 # 开发区域
 
-在本目录完成开发，具体语言、框架与 `src/` 内部结构自行设计。
+## 项目简介
 
-| 目录 | 用途 |
-| --- | --- |
-| [src](src/README.md) | 系统源码、依赖声明与模块说明 |
-| [configs](configs/README.md) | 推理服务、测试负载、基线及优化配置 |
-| [tests](tests/README.md) | 功能、数据统计及异常恢复测试 |
-| [results](results/README.md) | 原始记录、输出、汇总与优化记录 |
-| [reports](reports/README.md) | 最终书面报告与配图 |
+本项目为 ANTLab Infra 方向基础任务：为不超过 10 人的小工作室搭建本地 GPU 推理服务，支持办公文档处理和辅助编程，并开发性能测试、文件存储、前端展示与服务恢复功能。
 
-完成项目后，请更新本文件，包含：项目简介、系统结构、环境依赖、模型获取与校验信息、运行方法、测试方法、前端访问方式、报告和数据位置。模型与 llama.cpp 构建版本需可定位。
+## 系统结构
 
-通过 fork 仓库进行开发，按功能或修复目的组织提交。提交前核对 GitHub 上的文件完整性，并记录最终分支和 commit SHA。
+- `src/`：测试脚本（单请求、多并发、文件读取、异常恢复）和前端页面
+- `configs/`：服务启动配置
+- `tests/`：功能验证和异常恢复测试
+- `results/`：原始数据、汇总统计
+- `reports/`：书面报告
+
+## 环境依赖
+
+- WSL 2 + Ubuntu 24.04
+- CUDA 13.2
+- llama.cpp (b11528-e60eff95f)
+- 模型：Qwen3-0.6B-GGUF Q8_0
+
+## 运行方法
+
+1. 启动服务：`cd ~/llama.cpp && ./build/bin/llama-server -m ~/models/Qwen3-0.6B-Q8_0.gguf --host 0.0.0.0 --port 8080`
+2. 单请求测试：`python3 src/test_single.py`
+3. 多并发测试：`python3 src/test_concurrent.py`
+4. 文件读取测试：`python3 src/test_file.py`
+5. 异常恢复测试：`python3 src/test_recovery.py`
+6. 前端展示：`cd src/frontend && python3 -m http.server 3000`，浏览器打开 `http://localhost:3000`
+
+## 报告与数据位置
+
+- 报告：`reports/基础阶段考核报告.md`
+- 原始数据：`results/*.json`
