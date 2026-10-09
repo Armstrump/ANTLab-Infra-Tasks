@@ -1,0 +1,14 @@
+[
+    {
+        "step": "before",
+        "service_ok": true
+    },
+    {
+        "step": "killed",
+        "service_ok": false
+    },
+    {
+        "step": "recovered",
+        "service_ok": true
+    }
+]
