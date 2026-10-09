@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ANTLab Infra 测试面板</title>
+</head>
+<body>
+    <h1>本地推理服务测试面板</h1>
+    <button onclick="checkService()">检查服务状态</button>
+    <button onclick="loadResults()">加载测试结果</button>
+    <pre id="output">点击按钮开始</pre>
+
+    <script>
+    async function checkService() {
+        try {
+            const res = await fetch("http://localhost:8080/v1/chat/completions", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    model: "default",
+                    messages: [{role: "user", content: "你好"}],
+                    max_tokens: 16
+                })
+            });
+            const data = await res.json();
+            document.getElementById("output").textContent = 
+                "服务正常\n" + JSON.stringify(data, null, 2);
+        } catch (e) {
+            document.getElementById("output").textContent = "服务异常: " + e;
+        }
+    }
+
+    async function loadResults() {
+        try {
+            const res = await fetch("baseline_single.json");
+            const data = await res.json();
+            document.getElementById("output").textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+            document.getElementById("output").textContent = "无法加载结果: " + e;
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+    "concurrency": 1,
+    "runs": [
+        {
+            "run": 1,
+            "total_time_seconds": 0.782063,
+            "generated_tokens": 232
+        },
+        {
+            "run": 2,
+            "total_time_seconds": 0.428816,
+            "generated_tokens": 142
+        },
+        {
+            "run": 3,
+            "total_time_seconds": 0.742863,
+            "generated_tokens": 256
+        }
+    ]
+}
