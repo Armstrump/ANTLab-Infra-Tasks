@@ -1,3 +1,4 @@
+# 同时发4个请求，观察会不会排队
 import requests
 import time
 import json
@@ -18,17 +19,17 @@ def send_request(idx):
         "messages": [{"role": "user", "content": prompt}],
         "max_tokens": 512
     }
-    start = time.perf_counter()
+    t0 = time.perf_counter()
     response = requests.post(url, json=payload, timeout=300)
-    end = time.perf_counter()
+    t1 = time.perf_counter()
     data = response.json()
     content = data["choices"][0]["message"]["content"]
     tokens = data["usage"]["completion_tokens"]
     with lock:
         results.append({
             "request_id": idx,
-            "total_time_seconds": round(end - start, 6),
-            "generated_tokens": tokens,
+            "time_used": round(t1 - t0, 6),
+            "tokens": tokens,
             "output": content
         })
 
