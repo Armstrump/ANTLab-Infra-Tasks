@@ -10,11 +10,18 @@
         th { background: #f0f0f0; }
         button { padding: 8px 16px; margin-right: 10px; cursor: pointer; }
         #serviceStatus { margin-top: 10px; font-weight: bold; }
+        .summary { background: #f0f8ff; padding: 12px; margin: 10px 0; border-left: 4px solid #4a90d9; }
+        .summary span { font-weight: bold; color: #2c5aa0; }
     </style>
 </head>
 <body>
     <h1>本地推理服务测试面板</h1>
 
+    <div class="summary">
+        <h3>性能汇总</h3>
+        <p>缓存方案平均耗时：<span id="avgTime">-</span> 秒</p>
+        <p>最快一次：<span id="minTime">-</span> 秒 | 最慢一次：<span id="maxTime">-</span> 秒</p>
+    </div>
     <h2>服务状态</h2>
     <button onclick="checkService()">检查服务状态</button>
     <div id="serviceStatus">未检查</div>
@@ -63,6 +70,10 @@
         tbody.innerHTML += `<tr><td>第一次</td><td>${data.run1}</td><td>-</td></tr>`;
         tbody.innerHTML += `<tr><td>第二次</td><td>${data.run2}</td><td>-</td></tr>`;
         tbody.innerHTML += `<tr><td>第三次</td><td>${data.run3}</td><td>-</td></tr>`;
+    const times = [data.run1, data.run2, data.run3];
+    document.getElementById("avgTime").textContent = (times.reduce((a,b)=>a+b,0)/3).toFixed(4);
+    document.getElementById("minTime").textContent = Math.min(...times);
+    document.getElementById("maxTime").textContent = Math.max(...times);
     }
 
     async function loadConcurrent() {
