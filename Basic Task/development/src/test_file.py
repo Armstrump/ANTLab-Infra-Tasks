@@ -1,3 +1,4 @@
+# 读办公文档让模型做摘要
 import requests
 import time
 import json
@@ -18,9 +19,9 @@ payload = {
     "max_tokens": 512
 }
 
-start = time.perf_counter()
+t0 = time.perf_counter()
 response = requests.post(url, json=payload, timeout=300)
-end = time.perf_counter()
+t1 = time.perf_counter()
 
 data = response.json()
 content = data["choices"][0]["message"]["content"]
@@ -28,7 +29,7 @@ content = data["choices"][0]["message"]["content"]
 result = {
     "file": file_path,
     "prompt_length": len(prompt),
-    "total_time_seconds": round(end - start, 6),
+    "time_used": round(t1 - t0, 6),
     "output": content
 }
 

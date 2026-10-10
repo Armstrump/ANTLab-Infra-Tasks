@@ -1,3 +1,4 @@
+# 关掉服务再重启观察能否自行恢复
 import requests
 import time
 import json
@@ -23,7 +24,7 @@ results = []
 # 1. 确认服务正常
 results.append({"step": "before", "service_ok": check_service()})
 
-# 2. 杀掉 llama-server 进程
+# 2. 关掉 llama-server 进程
 subprocess.run(["pkill", "-f", "llama-server"])
 time.sleep(2)
 
