@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ANTLab Infra 测试面板</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+        button { padding: 8px 16px; margin-right: 10px; cursor: pointer; }
+        #serviceStatus { margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>本地推理服务测试面板</h1>
+
+    <h2>服务状态</h2>
+    <button onclick="checkService()">检查服务状态</button>
+    <div id="serviceStatus">未检查</div>
+
+    <h2>基线测试结果（单并发）</h2>
+    <button onclick="loadBaseline()">加载基线数据</button>
+    <table id="baselineTable">
+        <thead><tr><th>轮次</th><th>耗时(s)</th><th>生成token数</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>并发测试结果（4并发）</h2>
+    <button onclick="loadConcurrent()">加载并发数据</button>
+    <table id="concurrentTable">
+        <thead><tr><th>请求ID</th><th>耗时(s)</th><th>生成token数</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <h2>异常恢复测试</h2>
+    <button onclick="loadRecovery()">加载恢复数据</button>
+    <table id="recoveryTable">
+        <thead><tr><th>步骤</th><th>服务状态</th></tr></thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+    async function checkService() {
+        try {
+            const res = await fetch("http://localhost:8080/v1/chat/completions", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({model: "default", messages: [{role: "user", content: "你好"}], max_tokens: 16})
+            });
+            const data = await res.json();
+            document.getElementById("serviceStatus").textContent = "服务正常，返回 " + data.usage.total_tokens + " tokens";
+        } catch (e) {
+            document.getElementById("serviceStatus").textContent = "服务异常: " + e;
+        }
+    }
+
+    async function loadBaseline() {
+        const res = await fetch("cache_compare.json");
+        const data = await res.json();
+        const tbody = document.querySelector("#baselineTable tbody");
+        tbody.innerHTML = "";
+        tbody.innerHTML += `<tr><td>第一次</td><td>${data.run1}</td><td>-</td></tr>`;
+        tbody.innerHTML += `<tr><td>第二次</td><td>${data.run2}</td><td>-</td></tr>`;
+        tbody.innerHTML += `<tr><td>第三次</td><td>${data.run3}</td><td>-</td></tr>`;
+    }
+
+    async function loadConcurrent() {
+        const res = await fetch("slot_compare.json");
+        const data = await res.json();
+        const tbody = document.querySelector("#concurrentTable tbody");
+        tbody.innerHTML = "";
+        tbody.innerHTML += `<tr><td>第一次</td><td>${data.run1}</td><td>-</td></tr>`;
+        tbody.innerHTML += `<tr><td>第二次</td><td>${data.run2}</td><td>-</td></tr>`;
+        tbody.innerHTML += `<tr><td>第三次</td><td>${data.run3}</td><td>-</td></tr>`;
+    }
+
+    async function loadRecovery() {
+        const res = await fetch("cache_compare.json");
+        const data = await res.json();
+        const tbody = document.querySelector("#recoveryTable tbody");
+        tbody.innerHTML = "";
+        tbody.innerHTML += `<tr><td>说明</td><td>${data.note}</td></tr>`;
+    }
+    </script>
+</body>
+</html>

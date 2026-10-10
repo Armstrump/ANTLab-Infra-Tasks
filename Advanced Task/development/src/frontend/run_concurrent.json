@@ -1,0 +1,30 @@
+{
+    "concurrency": 4,
+    "total_requests": 4,
+    "results": [
+        {
+            "request_id": 3,
+            "total_time_seconds": 2.032987,
+            "generated_tokens": 201,
+            "output": "您好！我是您的智能助手，可以为您提供帮助和支持。如果您有任何问题或需要帮助，请随时告诉我！"
+        },
+        {
+            "request_id": 2,
+            "total_time_seconds": 2.122839,
+            "generated_tokens": 223,
+            "output": "你好！我是您的AI助手，专注于帮助您解答各种问题和获取信息。无论是日常生活、学习、工作，还是其他需求，我都能为您提供支持。有什么可以帮到您的吗？"
+        },
+        {
+            "request_id": 1,
+            "total_time_seconds": 2.140655,
+            "generated_tokens": 225,
+            "output": "您好！我是AI助手，专注于提供帮助和解答问题。我能够帮助您完成各种任务，如查询信息、解答疑问、撰写内容等。如果您有任何问题或需要 assistance，请随时告诉我！"
+        },
+        {
+            "request_id": 0,
+            "total_time_seconds": 2.195092,
+            "generated_tokens": 241,
+            "output": "你好！我是你的AI助手，目前没有特定的身份或背景，但可以通过对话与你建立联系。你可以告诉我你的需求，比如帮助解答问题、提供支持，或者分享一些兴趣，我都会尽力满足！"
+        }
+    ]
+}
